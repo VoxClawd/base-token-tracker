@@ -10,9 +10,45 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Auth middleware for scraper
+const SCRAPER_TOKEN = process.env.SCRAPER_TOKEN || 'local-scraper-secret';
+
+function authScraper(req, res, next) {
+  const auth = req.headers.authorization;
+  if (auth && auth === `Bearer ${SCRAPER_TOKEN}`) {
+    next();
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+}
+
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', clients: wss.clients.size });
+  res.json({ status: 'ok', clients: wss.clients.size, tokens: tokens.length });
+});
+
+// API endpoint to receive tokens from scraper
+app.post('/api/token', authScraper, (req, res) => {
+  const tokenData = req.body;
+  
+  if (!tokenData || !tokenData.contract) {
+    return res.status(400).json({ error: 'Invalid token data' });
+  }
+  
+  // Add to tokens array
+  tokens.unshift(tokenData);
+  if (tokens.length > 100) tokens.pop();
+  
+  console.log('📥 Received token:', tokenData.name || tokenData.contract.slice(0, 10));
+  
+  // Broadcast to all WebSocket clients
+  broadcast({
+    type: 'NEW_TOKEN',
+    data: tokenData,
+    timestamp: Date.now()
+  });
+  
+  res.json({ success: true });
 });
 
 // Start Express server
@@ -35,48 +71,10 @@ function broadcast(data) {
   });
 }
 
-// Function to fetch Base token data (placeholder - needs real API)
-async function fetchBaseTokens() {
-  // TODO: Replace with real data source
-  // For now, generate demo data to show UI works
-  return new Promise((resolve) => {
-    const demoToken = {
-      name: `Demo Token ${Math.floor(Math.random() * 1000)}`,
-      symbol: `TKN${Math.floor(Math.random() * 999)}`,
-      contract: `0x${Math.random().toString(16).substr(2, 40)}`,
-      liquidity: `$${(Math.random() * 100).toFixed(2)}K`,
-      creator: `0x${Math.random().toString(16).substr(2, 40)}`,
-      timestamp: Date.now()
-    };
-    resolve(demoToken);
-  });
-}
-
-// Simulate real-time token updates
+// No auto-generation - tokens come from external scraper
 async function startMonitoring() {
-  console.log('👀 Monitoring for new tokens...');
-  console.log('⚠️  Currently using DEMO data - needs real szn.zone integration');
-  
-  // Send new token every 30 seconds (demo)
-  setInterval(async () => {
-    const newToken = await fetchBaseTokens();
-    tokens.unshift(newToken);
-    if (tokens.length > 100) tokens.pop();
-    
-    console.log('🎯 New token:', newToken.name);
-    broadcast({
-      type: 'NEW_TOKEN',
-      data: newToken,
-      timestamp: Date.now()
-    });
-  }, 30000); // Every 30 seconds
-  
-  // Generate initial tokens
-  for (let i = 0; i < 10; i++) {
-    const token = await fetchBaseTokens();
-    tokens.push(token);
-    await new Promise(resolve => setTimeout(resolve, 500));
-  }
+  console.log('👀 Waiting for tokens from scraper...');
+  console.log('💡 Make sure the local scraper is running and sending data');
 }
 
 // Handle WebSocket connections
