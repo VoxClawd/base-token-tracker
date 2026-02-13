@@ -1,2 +1,3 @@
 // Entry point for Render
-require('./server.js');
+// Using simplified server without Puppeteer for now
+require('./server-simple.js');
