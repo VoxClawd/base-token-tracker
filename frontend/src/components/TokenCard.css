@@ -29,7 +29,8 @@
   margin-top: 1rem;
   border-radius: 8px;
   overflow: hidden;
-  max-height: 400px;
+  max-height: 350px;
+  overflow-y: auto;
 }
 
 .tweet-embed iframe {
