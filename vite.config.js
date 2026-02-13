@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   root: './frontend',
+  base: '/base-token-tracker/',
   build: {
     outDir: '../dist',
     emptyOutDir: true
