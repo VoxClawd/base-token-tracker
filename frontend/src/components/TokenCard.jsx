@@ -38,7 +38,36 @@ function TokenCard({ token }) {
         <span className="token-time">{formatTime(token.timestamp)}</span>
       </div>
 
+      {token.tags && (
+        <div className="card-tags">
+          {token.tags.split(',').map((tag, i) => (
+            <span key={i} className="tag">{tag.trim()}</span>
+          ))}
+        </div>
+      )}
+
       <div className="card-body">
+        {token.creator && (
+          <div className="info-row">
+            <span className="info-label">Creator:</span>
+            <span className="info-value creator">{token.creator}</span>
+          </div>
+        )}
+
+        {token.followers && (
+          <div className="info-row">
+            <span className="info-label">Followers:</span>
+            <span className="info-value">{token.followers}</span>
+          </div>
+        )}
+
+        {token.tokensCreated && (
+          <div className="info-row">
+            <span className="info-label">Tokens created:</span>
+            <span className="info-value">{token.tokensCreated}</span>
+          </div>
+        )}
+
         <div className="info-row">
           <span className="info-label">Contract:</span>
           <span className="info-value contract-address" title={token.contract}>
@@ -46,19 +75,17 @@ function TokenCard({ token }) {
           </span>
         </div>
 
+        {token.tax && (
+          <div className="info-row">
+            <span className="info-label">Tax:</span>
+            <span className="info-value tax">{token.tax}</span>
+          </div>
+        )}
+
         {token.liquidity && (
           <div className="info-row">
             <span className="info-label">Liquidity:</span>
             <span className="info-value">{token.liquidity}</span>
-          </div>
-        )}
-
-        {token.creator && (
-          <div className="info-row">
-            <span className="info-label">Creator:</span>
-            <span className="info-value" title={token.creator}>
-              {truncateAddress(token.creator)}
-            </span>
           </div>
         )}
       </div>
