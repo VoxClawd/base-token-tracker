@@ -38,57 +38,27 @@ function TokenCard({ token }) {
         <span className="token-time">{formatTime(token.timestamp)}</span>
       </div>
 
-      {token.tags && (
-        <div className="card-tags">
-          {token.tags.split(',').map((tag, i) => (
-            <span key={i} className="tag">{tag.trim()}</span>
-          ))}
-        </div>
-      )}
-
       <div className="card-body">
-        {token.creator && (
-          <div className="info-row">
-            <span className="info-label">Creator:</span>
-            <span className="info-value creator">{token.creator}</span>
-          </div>
-        )}
-
-        {token.followers && (
-          <div className="info-row">
-            <span className="info-label">Followers:</span>
-            <span className="info-value">{token.followers}</span>
-          </div>
-        )}
-
-        {token.tokensCreated && (
-          <div className="info-row">
-            <span className="info-label">Tokens created:</span>
-            <span className="info-value">{token.tokensCreated}</span>
-          </div>
-        )}
-
         <div className="info-row">
           <span className="info-label">Contract:</span>
           <span className="info-value contract-address" title={token.contract}>
             {truncateAddress(token.contract)}
           </span>
         </div>
-
-        {token.tax && (
-          <div className="info-row">
-            <span className="info-label">Tax:</span>
-            <span className="info-value tax">{token.tax}</span>
-          </div>
-        )}
-
-        {token.liquidity && (
-          <div className="info-row">
-            <span className="info-label">Liquidity:</span>
-            <span className="info-value">{token.liquidity}</span>
-          </div>
-        )}
       </div>
+
+      {token.tweetUrl && (
+        <div className="tweet-embed">
+          <iframe
+            src={`https://platform.twitter.com/embed/Tweet.html?id=${token.tweetUrl.split('/').pop()}`}
+            width="100%"
+            height="400"
+            frameBorder="0"
+            scrolling="no"
+            style={{ border: 'none', borderRadius: '8px' }}
+          ></iframe>
+        </div>
+      )}
 
       <div className="card-actions">
         <button
