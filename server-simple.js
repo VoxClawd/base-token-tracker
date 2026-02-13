@@ -62,6 +62,23 @@ const wss = new WebSocketServer({ server });
 // Store active tokens
 let tokens = [];
 
+// Clean old tokens every 30 seconds
+setInterval(() => {
+  const now = Date.now();
+  const fourMinutes = 4 * 60 * 1000; // 4 minutes in milliseconds
+  const oldCount = tokens.length;
+  
+  tokens = tokens.filter(token => {
+    const age = now - token.timestamp;
+    return age < fourMinutes;
+  });
+  
+  const removed = oldCount - tokens.length;
+  if (removed > 0) {
+    console.log(`🗑️  Cleaned ${removed} old tokens (older than 4 minutes)`);
+  }
+}, 30000); // Check every 30 seconds
+
 // Broadcast to all connected clients
 function broadcast(data) {
   wss.clients.forEach((client) => {
