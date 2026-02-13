@@ -57,11 +57,19 @@
   white-space: nowrap;
 }
 
+.token-symbol-row {
+  margin-bottom: 0.75rem;
+}
+
 .token-symbol {
   font-size: 0.875rem;
-  color: #888;
-  font-weight: 500;
+  color: #60a5fa;
+  font-weight: 600;
   text-transform: uppercase;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
 }
 
 .token-time {

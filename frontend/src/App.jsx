@@ -1,7 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import './App.css';
 import TokenCard from './components/TokenCard';
 import Header from './components/Header';
+
+// Memoize TokenCard to prevent unnecessary re-renders
+const MemoizedTokenCard = memo(TokenCard);
 
 const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:3001';
 
@@ -70,7 +73,7 @@ function App() {
             </div>
           ) : (
             tokens.map((token, index) => (
-              <TokenCard key={`${token.contract}-${index}`} token={token} />
+              <MemoizedTokenCard key={token.contract} token={token} />
             ))
           )}
         </div>

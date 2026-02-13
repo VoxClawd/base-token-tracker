@@ -33,10 +33,15 @@ function TokenCard({ token }) {
       <div className="card-header">
         <div className="token-info">
           <h3 className="token-name">{token.name || 'Unknown Token'}</h3>
-          {token.symbol && <span className="token-symbol">{token.symbol}</span>}
         </div>
         <span className="token-time">{formatTime(token.timestamp)}</span>
       </div>
+      
+      {token.symbol && (
+        <div className="token-symbol-row">
+          <span className="token-symbol">{token.symbol}</span>
+        </div>
+      )}
 
       <div className="card-body">
         <div className="info-row">
