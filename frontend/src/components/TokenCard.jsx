@@ -57,10 +57,10 @@ function TokenCard({ token }) {
           <iframe
             src={`https://platform.twitter.com/embed/Tweet.html?id=${token.tweetUrl.split('/').pop()}`}
             width="100%"
-            height="400"
+            height="500"
             frameBorder="0"
             scrolling="yes"
-            style={{ border: 'none', borderRadius: '8px' }}
+            style={{ border: 'none', borderRadius: '8px', transform: 'scale(0.9)', transformOrigin: 'top left', width: '111%' }}
           ></iframe>
         </div>
       )}
