@@ -11,7 +11,7 @@
 
 .token-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   animation: fadeIn 0.5s ease-in;
 }
@@ -55,9 +55,9 @@
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .token-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
   }
 }

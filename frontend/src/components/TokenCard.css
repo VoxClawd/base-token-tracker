@@ -29,6 +29,11 @@
   margin-top: 1rem;
   border-radius: 8px;
   overflow: hidden;
+  max-height: 400px;
+}
+
+.tweet-embed iframe {
+  overflow-y: auto !important;
 }
 
 .card-header {
